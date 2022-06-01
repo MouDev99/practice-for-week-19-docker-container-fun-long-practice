@@ -201,7 +201,9 @@ were using the full OS.
 
 So now that you know you can run a shell within a Docker container let's have
 some fun with it. Take a moment to install [wget] with the `brew install wget`
-command. Wget is a free package used to retrieve files from the web. Feel free
+command if you use a Mac. If you're running WSL, you likely already have `wget` 
+installed. If not, you can run `sudo apt install wget` to install it. 
+Wget is a free package used to retrieve files from the web. Feel free
 to read more about it while the package is installing. Once it is installed,
 here is a simple script that uses `wget` and will generate all the information
 for a StarWars character, try running it in your terminal.
@@ -218,7 +220,7 @@ done
 Okay so now that you know that a Docker container can run a shell within it, as
 well as shell script.
 
-Run a container based off of the [`alpine`][alpine] image, version 3.7.3 As a
+Run a container based off of the [`alpine:3.16.0`][alpine] image. As a
 reminder, the `alpine` image is a Linux distribution that is very popular among
 Docker images because it is only 5 MB in size. Name the container something
 indicative like "characters". Then, run the container in [detached][detach]
