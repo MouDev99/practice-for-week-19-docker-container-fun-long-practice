@@ -35,3 +35,12 @@ docker container stop ubuntu
 docker container run -it --name notliketheother ubuntu bash
 root@9ee4109e8238:/# curl parrot.live
 bash: curl: command not found
+
+#phase 2
+
+docker container run -d --name characters alpine /bin/sh -c "while :; do wget -qO- https://swapi.dev/api/people/?search=r2; printf '\n'; sleep 5s; done"
+
+docker container logs characters
+
+docker container stop characters
+docker container rm characters
