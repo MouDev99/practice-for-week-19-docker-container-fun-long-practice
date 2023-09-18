@@ -44,3 +44,25 @@ docker container logs characters
 
 docker container stop characters
 docker container rm characters
+
+#phase 3
+
+docker network create --driver bridge mybridge
+
+docker container run -d --net mybridge --net-alias srch --name elas_srch_1 elasticsearch:2
+docker container run -d --net mybridge --net-alias srch --name elas_srch_2 elasticsearch:2
+
+docker container inspect elas_srch_1
+
+docker container run --net mybridge --name alpine alpine /bin/sh -c "nslookup srch"
+
+docker container run -d -it --net mybridge --name centos-container centos
+docker exec -it centos-container bash
+curl -s srch:9200
+
+
+docker container restart centos-container
+docker exec -it centos-container bash -c "curl -s srch:9200"
+
+docker container restart centos-container
+docker exec -it centos-container bash -c "curl -s srch:9200"
