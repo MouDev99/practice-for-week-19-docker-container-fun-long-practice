@@ -66,3 +66,83 @@ docker exec -it centos-container bash -c "curl -s srch:9200"
 
 docker container restart centos-container
 docker exec -it centos-container bash -c "curl -s srch:9200"
+
+
+#phase 4
+
+docker container run -d --name DogsRGood nginx
+docker exec -it DogsRGood bash
+
+mkdir rad && touch rad/randomrad.txt
+echo "Hello, World" >> rad/randomrad.txt
+
+
+docker container run -d \
+-it \
+--name random \
+--mount type=bind,source="$(pwd)"/rad,target=/rad \
+nginx:latest
+
+
+docker inspect random
+
+docker exec -it random bash
+
+
+docker container run -d \
+-it \
+--name psql-container \
+--mount type=volume,source=psql-data,target=/var/lib/postgresql/data \
+postgres:9.6.1
+
+docker container logs psql-container
+
+docker volume ls
+
+docker volume inspect psql-data
+
+docker container exec -it psql-container psql -U postgres
+
+# CREATE TABLE cats
+# (
+# id SERIAL PRIMARY KEY,
+# name VARCHAR (255) NOT NULL
+# );
+
+# -- cat seeding
+# INSERT INTO
+# cats (name)
+# VALUES
+# ('Jet');
+
+# postgres=# SELECT * FROM cats;
+#  id | name
+# ----+------
+#   1 | Jet
+# (1 row)
+
+docker container stop psql-container
+
+docker volume ls
+
+# DRIVER    VOLUME NAME
+# local     psql-data
+
+docker container run -d \
+-it \
+--name psql-container-2 \
+--mount type=volume,source=psql-data,target=/var/lib/postgresql/data \
+postgres:9.6.2
+
+docker container logs psql-container-2
+
+docker container exec -it psql-container-2 psql -U postgres
+
+# postgres=# SELECT * FROM cats;
+#  id | name
+# ----+------
+#   1 | Jet
+# (1 row)
+
+docker container rm -f psql-container psql-container-2
+docker volume prune
